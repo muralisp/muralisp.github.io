@@ -3,838 +3,141 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Murali S P — Senior Automation/Platform Engineer</title>
+<title>Murali S P — SRE Lead & Technical Architect</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Fraunces:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0a0a0b;
-    --surface: #111113;
-    --surface2: #1a1a1e;
-    --border: #2a2a30;
-    --gold: #d4a843;
-    --gold-dim: #8a6c28;
-    --amber: #f0b429;
-    --text: #e8e6e0;
-    --text-dim: #7a7870;
-    --text-mid: #a8a49c;
-    --green: #4ade80;
-    --blue: #60a5fa;
-    --red: #f87171;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Fraunces', Georgia, serif;
-    font-size: 16px;
-    line-height: 1.7;
-    overflow-x: hidden;
-  }
-
-  /* ── NOISE TEXTURE OVERLAY ── */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 1000;
-    opacity: 0.4;
-  }
-
-  /* ── SCROLLBAR ── */
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 2px; }
-
-  /* ── NAV ── */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.2rem 4rem;
-    background: rgba(10,10,11,0.85);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .nav-logo {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.85rem;
-    color: var(--gold);
-    letter-spacing: 0.05em;
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 2.5rem;
-    list-style: none;
-  }
-
-  .nav-links a {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--text-mid);
-    text-decoration: none;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    transition: color 0.2s;
-  }
-
-  .nav-links a:hover { color: var(--gold); }
-
-  /* ── HERO ── */
-  .hero {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    padding: 8rem 4rem 4rem;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-bg-grid {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(var(--border) 1px, transparent 1px),
-      linear-gradient(90deg, var(--border) 1px, transparent 1px);
-    background-size: 60px 60px;
-    opacity: 0.3;
-    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
-  }
-
-  .hero-glow {
-    position: absolute;
-    width: 600px; height: 600px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(212,168,67,0.08) 0%, transparent 70%);
-    top: 50%; left: 55%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-  }
-
-  .hero-left {
-    position: relative;
-    z-index: 2;
-  }
-
-  .hero-eyebrow {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--gold);
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-
-  .hero-eyebrow::before {
-    content: '';
-    display: block;
-    width: 32px; height: 1px;
-    background: var(--gold);
-  }
-
-  h1 {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(3rem, 6vw, 5.5rem);
-    font-weight: 800;
-    line-height: 1.0;
-    letter-spacing: -0.03em;
-    margin-bottom: 1.5rem;
-  }
-
-  h1 .accent { color: var(--gold); }
-
-  .hero-desc {
-    font-size: 1.1rem;
-    color: var(--text-mid);
-    max-width: 480px;
-    margin-bottom: 2.5rem;
-    font-weight: 300;
-    font-style: italic;
-  }
-
-  .hero-stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    max-width: 480px;
-    margin-bottom: 2.5rem;
-  }
-
-  .stat {
-    background: var(--surface);
-    padding: 1rem 1.25rem;
-    text-align: center;
-  }
-
-  .stat-value {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.6rem;
-    font-weight: 800;
-    color: var(--gold);
-    line-height: 1;
-    margin-bottom: 0.25rem;
-  }
-
-  .stat-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-
-  .hero-ctas {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-  }
-
-  .btn-primary {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: var(--gold);
-    color: #000;
-    padding: 0.8rem 1.75rem;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: all 0.2s;
-  }
-
-  .btn-primary:hover {
-    background: var(--amber);
-    transform: translateY(-1px);
-  }
-
-  .btn-ghost {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    border: 1px solid var(--border);
-    color: var(--text-mid);
-    padding: 0.8rem 1.75rem;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: all 0.2s;
-  }
-
-  .btn-ghost:hover {
-    border-color: var(--gold);
-    color: var(--gold);
-  }
-
-  /* ── TERMINAL CARD (right side of hero) ── */
-  .hero-right {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    justify-content: flex-end;
-  }
-
-  .terminal-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    width: 100%;
-    max-width: 520px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.78rem;
-    overflow: hidden;
-  }
-
-  .terminal-header {
-    background: var(--surface2);
-    padding: 0.75rem 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .dot { width: 10px; height: 10px; border-radius: 50%; }
-  .dot-red { background: #ff5f57; }
-  .dot-yellow { background: #ffbd2e; }
-  .dot-green { background: #28c840; }
-
-  .terminal-title {
-    margin-left: auto;
-    font-size: 0.65rem;
-    color: var(--text-dim);
-    letter-spacing: 0.1em;
-  }
-
-  .terminal-body {
-    padding: 1.25rem 1.5rem;
-    line-height: 1.9;
-  }
-
-  .t-prompt { color: var(--gold); }
-  .t-cmd { color: var(--text); }
-  .t-comment { color: var(--text-dim); }
-  .t-key { color: var(--blue); }
-  .t-val { color: var(--green); }
-  .t-num { color: var(--amber); }
-  .t-str { color: #c3e88d; }
-  .t-blank { display: block; height: 0.5rem; }
-
-  .cursor {
-    display: inline-block;
-    width: 8px; height: 1em;
-    background: var(--gold);
-    animation: blink 1s step-end infinite;
-    vertical-align: text-bottom;
-  }
-
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-
-  /* ── SECTION COMMON ── */
-  section {
-    padding: 6rem 4rem;
-    position: relative;
-  }
-
-  .section-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--gold);
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    margin-bottom: 0.75rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-
-  .section-label::before {
-    content: attr(data-num);
-    color: var(--text-dim);
-  }
-
-  .section-title {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(2rem, 4vw, 3.2rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    margin-bottom: 1rem;
-    line-height: 1.1;
-  }
-
-  .section-sub {
-    color: var(--text-mid);
-    font-style: italic;
-    font-weight: 300;
-    max-width: 600px;
-    margin-bottom: 3.5rem;
-  }
-
-  /* ── IMPACT BAR ── */
-  #impact {
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .impact-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-  }
-
-  .impact-cell {
-    background: var(--bg);
-    padding: 2rem 1.5rem;
-    text-align: center;
-    transition: background 0.2s;
-  }
-
-  .impact-cell:hover { background: var(--surface2); }
-
-  .impact-num {
-    font-family: 'Syne', sans-serif;
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: var(--gold);
-    line-height: 1;
-    margin-bottom: 0.4rem;
-  }
-
-  .impact-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-  }
-
-  /* ── ASKLOUD FEATURE ── */
-  #askloud {
-    background: var(--bg);
-    overflow: hidden;
-  }
-
-  .askloud-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: start;
-  }
-
-  .askloud-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: rgba(212,168,67,0.1);
-    border: 1px solid var(--gold-dim);
-    padding: 0.35rem 0.9rem;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--gold);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 1.5rem;
-  }
-
-  .askloud-features {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-    margin-top: 2rem;
-  }
-
-  .feature-item {
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-    padding: 1rem 1.25rem;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    transition: border-color 0.2s, background 0.2s;
-  }
-
-  .feature-item:hover {
-    border-color: var(--gold-dim);
-    background: var(--surface2);
-  }
-
-  .feature-icon {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--gold);
-    background: rgba(212,168,67,0.1);
-    padding: 0.4rem 0.6rem;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  .feature-text h4 {
-    font-family: 'Syne', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 0.25rem;
-  }
-
-  .feature-text p {
-    font-size: 0.83rem;
-    color: var(--text-mid);
-    font-weight: 300;
-  }
-
-  .askloud-demo {
-    position: relative;
-  }
-
-  .demo-terminal {
-    background: #0d0d10;
-    border: 1px solid var(--border);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    overflow: hidden;
-  }
-
-  .demo-header {
-    background: var(--surface2);
-    padding: 0.6rem 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .demo-body {
-    padding: 1.25rem 1.5rem;
-    line-height: 2;
-  }
-
-  .demo-modes {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    margin-top: 1.5rem;
-  }
-
-  .mode-cell {
-    background: var(--surface);
-    padding: 1rem;
-    text-align: center;
-  }
-
-  .mode-name {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--gold);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 0.3rem;
-  }
-
-  .mode-desc {
-    font-size: 0.75rem;
-    color: var(--text-dim);
-    font-style: italic;
-  }
-
-  .github-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 1.5rem;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--gold);
-    text-decoration: none;
-    border-bottom: 1px solid var(--gold-dim);
-    padding-bottom: 2px;
-    transition: color 0.2s;
-  }
-
-  .github-link:hover { color: var(--amber); }
-
-  /* ── EXPERIENCE / CAR SECTION ── */
-  #experience {
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-  }
-
-  .exp-tabs {
-    display: flex;
-    gap: 0;
-    margin-bottom: 3rem;
-    border-bottom: 1px solid var(--border);
-    overflow-x: auto;
-  }
-
-  .exp-tab {
-    padding: 0.9rem 1.5rem;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    cursor: pointer;
-    border: none;
-    background: none;
-    border-bottom: 2px solid transparent;
-    transition: all 0.2s;
-    white-space: nowrap;
-  }
-
-  .exp-tab:hover { color: var(--text-mid); }
-  .exp-tab.active {
-    color: var(--gold);
-    border-bottom-color: var(--gold);
-  }
-
-  .exp-content { display: none; }
-  .exp-content.active { display: block; }
-
-  .exp-header {
-    margin-bottom: 2.5rem;
-  }
-
-  .exp-role {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 0.25rem;
-  }
-
-  .exp-meta {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--gold);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  .car-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .car-card {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    padding: 1.5rem;
-    transition: border-color 0.2s, transform 0.2s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .car-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--gold), transparent);
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-
-  .car-card:hover {
-    border-color: var(--gold-dim);
-    transform: translateY(-2px);
-  }
-
-  .car-card:hover::before { opacity: 1; }
-
-  .car-num {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    margin-bottom: 0.6rem;
-  }
-
-  .car-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    margin-bottom: 0.75rem;
-    line-height: 1.3;
-  }
-
-  .car-section {
-    margin-bottom: 0.75rem;
-  }
-
-  .car-section-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 0.3rem;
-  }
-
-  .car-section-label.c { color: var(--red); }
-  .car-section-label.a { color: var(--blue); }
-  .car-section-label.r { color: var(--green); }
-
-  .car-section p {
-    font-size: 0.82rem;
-    color: var(--text-mid);
-    font-weight: 300;
-    line-height: 1.6;
-  }
-
-  .car-result-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    background: rgba(74,222,128,0.08);
-    border: 1px solid rgba(74,222,128,0.2);
-    padding: 0.25rem 0.65rem;
-    margin-top: 0.5rem;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--green);
-    letter-spacing: 0.08em;
-  }
-
-  .car-result-badge.gold {
-    background: rgba(212,168,67,0.08);
-    border-color: rgba(212,168,67,0.2);
-    color: var(--gold);
-  }
-
-  /* ── SKILLS SECTION ── */
-  #skills {
-    background: var(--bg);
-    border-top: 1px solid var(--border);
-  }
-
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-  }
-
-  .skill-group h3 {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--gold);
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .skill-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-  }
-
-  .skill-tag {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--text-mid);
-    border: 1px solid var(--border);
-    padding: 0.3rem 0.6rem;
-    transition: all 0.15s;
-    letter-spacing: 0.05em;
-  }
-
-  .skill-tag:hover {
-    border-color: var(--gold-dim);
-    color: var(--gold);
-  }
-
-  /* ── CONTACT ── */
-  #contact {
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    text-align: center;
-    padding: 5rem 4rem;
-  }
-
-  .contact-inner {
-    max-width: 600px;
-    margin: 0 auto;
-  }
-
-  .contact-links {
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-    margin-top: 2rem;
-    flex-wrap: wrap;
-  }
-
-  .contact-link {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--text-mid);
-    text-decoration: none;
-    padding: 0.6rem 1.25rem;
-    border: 1px solid var(--border);
-    transition: all 0.2s;
-    letter-spacing: 0.08em;
-  }
-
-  .contact-link:hover {
-    border-color: var(--gold);
-    color: var(--gold);
-  }
-
-  /* ── FOOTER ── */
-  footer {
-    padding: 1.5rem 4rem;
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  footer p {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--text-dim);
-    letter-spacing: 0.1em;
-  }
-
-  footer .gold { color: var(--gold); }
-
-  /* ── ANIMATIONS ── */
-  .fade-up {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-
-  .fade-up.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* ── DIVIDER ── */
-  .divider {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--border), transparent);
-    margin: 0 4rem;
-  }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 1024px) {
-    nav { padding: 1rem 2rem; }
-    .hero, section { padding-left: 2rem; padding-right: 2rem; }
-    .hero { grid-template-columns: 1fr; gap: 3rem; }
-    .hero-right { justify-content: flex-start; }
-    .askloud-layout { grid-template-columns: 1fr; }
-    .skills-grid { grid-template-columns: repeat(2,1fr); }
-    .impact-grid { grid-template-columns: repeat(2,1fr); }
-    footer { flex-direction: column; gap: 0.5rem; text-align: center; }
-  }
-
-  @media (max-width: 640px) {
-    nav .nav-links { display: none; }
-    .hero-stats { grid-template-columns: repeat(3,1fr); }
-    .skills-grid { grid-template-columns: 1fr; }
-    .impact-grid { grid-template-columns: repeat(2,1fr); }
-    .car-grid { grid-template-columns: 1fr; }
-  }
+  :root{--bg:#0a0a0b;--surface:#111113;--surface2:#1a1a1e;--border:#2a2a30;--gold:#d4a843;--gold-dim:#8a6c28;--amber:#f0b429;--text:#e8e6e0;--text-dim:#4a4a50;--text-mid:#a8a49c;--green:#4ade80;--blue:#60a5fa;--red:#f87171}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'Fraunces',Georgia,serif;font-size:16px;line-height:1.7;overflow-x:hidden}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:0.4}
+  ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--gold-dim);border-radius:2px}
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 4rem;background:rgba(10,10,11,0.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+  .nav-logo{font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--gold);letter-spacing:.05em}
+  .nav-links{display:flex;gap:2.5rem;list-style:none}
+  .nav-links a{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text-mid);text-decoration:none;letter-spacing:.12em;text-transform:uppercase;transition:color .2s}
+  .nav-links a:hover{color:var(--gold)}
+  .hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:8rem 4rem 4rem;position:relative;overflow:hidden}
+  .hero-bg-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:60px 60px;opacity:.3;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%)}
+  .hero-glow{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(212,168,67,.08) 0%,transparent 70%);top:50%;left:55%;transform:translate(-50%,-50%);pointer-events:none}
+  .hero-left{position:relative;z-index:2}
+  .hero-eyebrow{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--gold);letter-spacing:.2em;text-transform:uppercase;margin-bottom:1.5rem;display:flex;align-items:center;gap:.75rem}
+  .hero-eyebrow::before{content:'';display:block;width:32px;height:1px;background:var(--gold)}
+  h1{font-family:'Syne',sans-serif;font-size:clamp(3rem,6vw,5.5rem);font-weight:800;line-height:1;letter-spacing:-.03em;margin-bottom:.5rem}
+  h1 .accent{color:var(--gold)}
+  .hero-subtitle{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:600;color:var(--text-mid);margin-bottom:1.5rem;letter-spacing:-.01em}
+  .hero-desc{font-size:1rem;color:var(--text-mid);max-width:480px;margin-bottom:2.5rem;font-weight:300;font-style:italic}
+  .hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);max-width:480px;margin-bottom:2.5rem}
+  .stat{background:var(--surface);padding:1rem 1.25rem;text-align:center}
+  .stat-value{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--gold);line-height:1;margin-bottom:.25rem}
+  .stat-label{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--text-mid);text-transform:uppercase;letter-spacing:.1em}
+  .hero-ctas{display:flex;gap:1rem;align-items:center}
+  .btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:var(--gold);color:#000;padding:.8rem 1.75rem;font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:all .2s}
+  .btn-primary:hover{background:var(--amber);transform:translateY(-1px)}
+  .btn-ghost{display:inline-flex;align-items:center;gap:.5rem;border:1px solid var(--border);color:var(--text-mid);padding:.8rem 1.75rem;font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:all .2s}
+  .btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+  .hero-right{position:relative;z-index:2;display:flex;justify-content:flex-end}
+  .terminal-card{background:var(--surface);border:1px solid var(--border);width:100%;max-width:520px;font-family:'JetBrains Mono',monospace;font-size:.78rem;overflow:hidden}
+  .terminal-header{background:var(--surface2);padding:.75rem 1rem;display:flex;align-items:center;gap:.5rem;border-bottom:1px solid var(--border)}
+  .dot{width:10px;height:10px;border-radius:50%}.dot-red{background:#ff5f57}.dot-yellow{background:#ffbd2e}.dot-green{background:#28c840}
+  .terminal-title{margin-left:auto;font-size:.65rem;color:var(--text-mid);letter-spacing:.1em}
+  .terminal-body{padding:1.25rem 1.5rem;line-height:1.9}
+  .t-prompt{color:var(--gold)}.t-key{color:var(--blue)}.t-val{color:var(--green)}.t-num{color:var(--amber)}.t-str{color:#c3e88d}.t-blank{display:block;height:.5rem}
+  .cursor{display:inline-block;width:8px;height:1em;background:var(--gold);animation:blink 1s step-end infinite;vertical-align:text-bottom}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+  section{padding:6rem 4rem;position:relative}
+  .section-label{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--gold);letter-spacing:.25em;text-transform:uppercase;margin-bottom:.75rem;display:flex;align-items:center;gap:.75rem}
+  .section-label::before{content:attr(data-num);color:var(--text-mid)}
+  .section-title{font-family:'Syne',sans-serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:800;letter-spacing:-.02em;margin-bottom:1rem;line-height:1.1}
+  .section-sub{color:var(--text-mid);font-style:italic;font-weight:300;max-width:700px;margin-bottom:3.5rem}
+  #impact{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:4rem}
+  .impact-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border)}
+  .impact-cell{background:var(--bg);padding:2rem 1.5rem;text-align:center;transition:background .2s}
+  .impact-cell:hover{background:var(--surface2)}
+  .impact-num{font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800;color:var(--gold);line-height:1;margin-bottom:.4rem}
+  .impact-label{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--text-mid);text-transform:uppercase;letter-spacing:.12em}
+  #summary{background:var(--bg);border-top:1px solid var(--border)}
+  .summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:3rem}
+  .summary-item{background:var(--surface);padding:1.5rem 1.75rem;transition:background .2s}
+  .summary-item:hover{background:var(--surface2)}
+  .summary-icon{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--gold);text-transform:uppercase;letter-spacing:.15em;margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
+  .summary-icon::before{content:'';width:20px;height:1px;background:var(--gold-dim)}
+  .summary-item h3{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.5rem;color:var(--text)}
+  .summary-item p{font-size:.85rem;color:var(--text-mid);font-weight:300;line-height:1.65}
+  .competencies{border:1px solid var(--border);overflow:hidden;margin-top:2rem}
+  .comp-header{background:var(--surface2);padding:.75rem 1.5rem;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--gold);letter-spacing:.2em;text-transform:uppercase;border-bottom:1px solid var(--border)}
+  .comp-row{display:grid;grid-template-columns:220px 1fr;border-bottom:1px solid var(--border)}
+  .comp-row:last-child{border-bottom:none}
+  .comp-cat{background:var(--surface);padding:.9rem 1.5rem;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--gold);letter-spacing:.08em;border-right:1px solid var(--border);display:flex;align-items:center}
+  .comp-tags{background:var(--bg);padding:.9rem 1.5rem;display:flex;flex-wrap:wrap;gap:.4rem;align-items:center}
+  .comp-tag{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--text-mid);border:1px solid var(--border);padding:.2rem .55rem;transition:all .15s}
+  .comp-tag:hover{border-color:var(--gold-dim);color:var(--gold)}
+  #askloud{background:var(--surface);border-top:1px solid var(--border);overflow:hidden}
+  .askloud-layout{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
+  .askloud-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(212,168,67,.1);border:1px solid var(--gold-dim);padding:.35rem .9rem;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--gold);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1.5rem}
+  .askloud-features{display:flex;flex-direction:column;gap:1.25rem;margin-top:2rem}
+  .feature-item{display:flex;gap:1rem;align-items:flex-start;padding:1rem 1.25rem;border:1px solid var(--border);background:var(--bg);transition:border-color .2s,background .2s}
+  .feature-item:hover{border-color:var(--gold-dim);background:var(--surface2)}
+  .feature-icon{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--gold);background:rgba(212,168,67,.1);padding:.4rem .6rem;white-space:nowrap;flex-shrink:0}
+  .feature-text h4{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:.25rem}
+  .feature-text p{font-size:.83rem;color:var(--text-mid);font-weight:300}
+  .demo-terminal{background:#0d0d10;border:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:.75rem;overflow:hidden}
+  .demo-header{background:var(--surface2);padding:.6rem 1rem;display:flex;align-items:center;gap:.5rem;border-bottom:1px solid var(--border)}
+  .demo-body{padding:1.25rem 1.5rem;line-height:2}
+  .demo-modes{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-top:1.5rem}
+  .mode-cell{background:var(--surface);padding:1rem;text-align:center}
+  .mode-name{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.3rem}
+  .mode-desc{font-size:.75rem;color:var(--text-mid);font-style:italic}
+  .github-link{display:inline-flex;align-items:center;gap:.5rem;margin-top:1.5rem;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--gold);text-decoration:none;border-bottom:1px solid var(--gold-dim);padding-bottom:2px;transition:color .2s}
+  .github-link:hover{color:var(--amber)}
+  #experience{background:var(--bg);border-top:1px solid var(--border)}
+  .exp-tabs{display:flex;gap:0;margin-bottom:3rem;border-bottom:1px solid var(--border);overflow-x:auto}
+  .exp-tab{padding:.9rem 1.5rem;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--text-mid);text-transform:uppercase;letter-spacing:.1em;cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
+  .exp-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+  .exp-content{display:none}.exp-content.active{display:block}
+  .exp-header{margin-bottom:2.5rem}
+  .exp-role{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:700;color:var(--text);margin-bottom:.25rem}
+  .exp-meta{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--gold);letter-spacing:.1em;text-transform:uppercase}
+  .car-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(440px,1fr));gap:1.5rem}
+  .car-card{background:var(--surface);border:1px solid var(--border);overflow:hidden;transition:border-color .2s,transform .2s;position:relative}
+  .car-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent);opacity:0;transition:opacity .2s;z-index:1}
+  .car-card:hover{border-color:var(--gold-dim);transform:translateY(-2px)}
+  .car-card:hover::before{opacity:1}
+  .car-img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;border-bottom:1px solid var(--border)}
+  .car-body{padding:1.25rem 1.5rem}
+  .car-num{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--text-mid);text-transform:uppercase;letter-spacing:.15em;margin-bottom:.4rem}
+  .car-title{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:.9rem;line-height:1.3;color:var(--text)}
+  .resume-statement{font-size:.82rem;color:var(--text-mid);font-style:italic;font-weight:300;line-height:1.6;border-left:2px solid var(--gold-dim);padding-left:.85rem;margin-bottom:.85rem}
+  .car-result-badge{display:inline-flex;align-items:center;gap:.35rem;background:rgba(212,168,67,.08);border:1px solid rgba(212,168,67,.2);padding:.25rem .65rem;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--gold);letter-spacing:.08em}
+  .car-result-badge.green{background:rgba(74,222,128,.07);border-color:rgba(74,222,128,.2);color:var(--green)}
+  #skills{background:var(--surface);border-top:1px solid var(--border)}
+  .skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem}
+  .skill-group h3{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--gold);text-transform:uppercase;letter-spacing:.15em;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+  .skill-tags{display:flex;flex-wrap:wrap;gap:.4rem}
+  .skill-tag{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--text-mid);border:1px solid var(--border);padding:.3rem .6rem;transition:all .15s;letter-spacing:.05em}
+  .skill-tag:hover{border-color:var(--gold-dim);color:var(--gold)}
+  #contact{background:var(--bg);border-top:1px solid var(--border);text-align:center;padding:5rem 4rem}
+  .contact-inner{max-width:600px;margin:0 auto}
+  .contact-links{display:flex;justify-content:center;gap:1.5rem;margin-top:2rem;flex-wrap:wrap}
+  .contact-link{display:flex;align-items:center;gap:.5rem;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text-mid);text-decoration:none;padding:.6rem 1.25rem;border:1px solid var(--border);transition:all .2s;letter-spacing:.08em}
+  .contact-link:hover{border-color:var(--gold);color:var(--gold)}
+  footer{padding:1.5rem 4rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+  footer p{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--text-mid);letter-spacing:.1em}
+  footer .gold{color:var(--gold)}
+  .fade-up{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+  .fade-up.visible{opacity:1;transform:translateY(0)}
+  .divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:0 4rem}
+  @media(max-width:1024px){nav{padding:1rem 2rem}.hero,section{padding-left:2rem;padding-right:2rem}.hero{grid-template-columns:1fr;gap:3rem}.hero-right{justify-content:flex-start}.askloud-layout{grid-template-columns:1fr}.skills-grid{grid-template-columns:repeat(2,1fr)}.impact-grid{grid-template-columns:repeat(2,1fr)}.summary-grid{grid-template-columns:1fr}.comp-row{grid-template-columns:1fr}.comp-cat{border-right:none;border-bottom:1px solid var(--border)}footer{flex-direction:column;gap:.5rem;text-align:center}}
+  @media(max-width:640px){nav .nav-links{display:none}.car-grid{grid-template-columns:1fr}.skills-grid{grid-template-columns:1fr}.impact-grid{grid-template-columns:repeat(2,1fr)}#impact{padding:2rem}}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <div class="nav-logo">muralisp.dev</div>
   <ul class="nav-links">
+    <li><a href="#summary">About</a></li>
     <li><a href="#askloud">Askloud</a></li>
     <li><a href="#experience">Experience</a></li>
     <li><a href="#skills">Skills</a></li>
@@ -846,56 +149,39 @@
 <section class="hero">
   <div class="hero-bg-grid"></div>
   <div class="hero-glow"></div>
-
   <div class="hero-left fade-up">
-    <div class="hero-eyebrow">Senior Automation · Platform · AIOps Engineer</div>
+    <div class="hero-eyebrow">SRE Lead &amp; Technical Architect</div>
     <h1>Murali<br><span class="accent">S P</span></h1>
-    <p class="hero-desc">Engineering Cloud Platforms that Scale Systems & Optimize Costs on Autopilot</p>
-
+    <div class="hero-subtitle">Platform Engineering &amp; Automation</div>
+    <p class="hero-desc">Architecting high-velocity, secure, and self-service infrastructure for global enterprise environments — translating automation into measurable business impact.</p>
     <div class="hero-stats">
-      <div class="stat">
-        <div class="stat-value">$3.3M+</div>
-        <div class="stat-label">Cloud Savings</div>
-      </div>
-      <div class="stat">
-        <div class="stat-value">29</div>
-        <div class="stat-label">CAR Stories</div>
-      </div>
-      <div class="stat">
-        <div class="stat-value">35+</div>
-        <div class="stat-label">FTEs Saved</div>
-      </div>
+      <div class="stat"><div class="stat-value">$3.3M+</div><div class="stat-label">Cloud Savings</div></div>
+      <div class="stat"><div class="stat-value">35+</div><div class="stat-label">FTEs Saved</div></div>
+      <div class="stat"><div class="stat-value">15+</div><div class="stat-label">Years Experience</div></div>
     </div>
-
     <div class="hero-ctas">
-      <a href="#askloud" class="btn-primary">↳ See Askloud Project</a>
-      <a href="#experience" class="btn-ghost">View Experience</a>
+      <a href="#experience" class="btn-primary">↳ View 29 CAR Stories</a>
+      <a href="#askloud" class="btn-ghost">Askloud Project</a>
     </div>
   </div>
-
-  <div class="hero-right fade-up" style="transition-delay:0.15s">
+  <div class="hero-right fade-up" style="transition-delay:.15s">
     <div class="terminal-card">
       <div class="terminal-header">
-        <div class="dot dot-red"></div>
-        <div class="dot dot-yellow"></div>
-        <div class="dot dot-green"></div>
+        <div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div>
         <span class="terminal-title">profile.json</span>
       </div>
       <div class="terminal-body">
-        <span class="t-prompt">$ </span><span class="t-cmd">cat profile.json</span><br>
+        <span class="t-prompt">$ </span>cat profile.json<br>
         <span class="t-blank"></span>
         {<br>
-        &nbsp;&nbsp;<span class="t-key">"name"</span>: <span class="t-str">"Murali S P"</span>,<br>
-        &nbsp;&nbsp;<span class="t-key">"role"</span>: <span class="t-str">"Sr. Automation Engineer"</span>,<br>
-        &nbsp;&nbsp;<span class="t-key">"domains"</span>: [<span class="t-str">"DevOps"</span>, <span class="t-str">"SRE"</span>, <span class="t-str">"AIOps"</span>, <span class="t-str">"Platform"</span>],<br>
+        &nbsp;&nbsp;<span class="t-key">"role"</span>: <span class="t-str">"SRE Lead & Technical Architect"</span>,<br>
+        &nbsp;&nbsp;<span class="t-key">"domains"</span>: [<span class="t-str">"DevOps"</span>, <span class="t-str">"SRE"</span>, <span class="t-str">"AIOps"</span>, <span class="t-str">"FinOps"</span>],<br>
         &nbsp;&nbsp;<span class="t-key">"oss_project"</span>: <span class="t-str">"Askloud"</span>,<br>
         &nbsp;&nbsp;<span class="t-key">"cloud_savings"</span>: <span class="t-num">3340000</span>,<br>
-        &nbsp;&nbsp;<span class="t-key">"top_tools"</span>: [<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;<span class="t-str">"Python"</span>, <span class="t-str">"BASH"</span><span class="t-str">"Ansible"</span>, <span class="t-str">"Terraform"</span>,<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;<span class="t-str">"AWS SDK"</span>, <span class="t-str">"Docker"</span>, <span class="t-str">"Kubernetes"</span>, <span class="t-str">"Jenkins"</span>, <span class="t-str">"Git"</span><br>
-        &nbsp;&nbsp;],<br>
+        &nbsp;&nbsp;<span class="t-key">"deploy_freq_increase"</span>: <span class="t-str">"25x"</span>,<br>
+        &nbsp;&nbsp;<span class="t-key">"lead_time_reduction"</span>: <span class="t-str">"90%"</span>,<br>
+        &nbsp;&nbsp;<span class="t-key">"devices_managed"</span>: <span class="t-num">7000</span>,<br>
         &nbsp;&nbsp;<span class="t-key">"fte_savings"</span>: <span class="t-num">35</span>,<br>
-        &nbsp;&nbsp;<span class="t-key">"location"</span>: <span class="t-str">"Bengaluru, India"</span>,<br>
         &nbsp;&nbsp;<span class="t-key">"status"</span>: <span class="t-val">"open_to_opportunities"</span><br>
         }<br>
         <span class="t-blank"></span>
@@ -905,115 +191,135 @@
   </div>
 </section>
 
-<!-- IMPACT BAR -->
-<section id="impact" style="padding: 4rem;">
+<!-- IMPACT -->
+<section id="impact">
   <div class="impact-grid fade-up">
-    <div class="impact-cell">
-      <div class="impact-num">$1.83M</div>
-      <div class="impact-label">Single Tool Savings (search_aws)</div>
+    <div class="impact-cell"><div class="impact-num">$1.83M</div><div class="impact-label">Single Tool Savings (search_aws)</div></div>
+    <div class="impact-cell"><div class="impact-num">25×</div><div class="impact-label">Deployment Frequency Increase</div></div>
+    <div class="impact-cell"><div class="impact-num">7,000+</div><div class="impact-label">Network Devices Automated (EY)</div></div>
+    <div class="impact-cell"><div class="impact-num">100%</div><div class="impact-label">Standing Admin Privileges Eliminated</div></div>
+  </div>
+</section>
+
+<!-- SUMMARY -->
+<section id="summary">
+  <div class="section-label" data-num="01">Professional Summary</div>
+  <div class="section-title">About Me</div>
+  <p class="section-sub">SRE Lead &amp; Technical Architect with 15+ years of experience building automation frameworks that transform how global enterprises operate at scale.</p>
+
+  <div class="summary-grid fade-up">
+    <div class="summary-item">
+      <div class="summary-icon">Elite Performance</div>
+      <h3>Elite Performance Architect</h3>
+      <p>Proven track record of transforming stagnant deployment cycles into "Elite" DORA-standard workflows, achieving a 25× increase in deployment frequency and reducing infrastructure lead times by 90%.</p>
     </div>
-    <div class="impact-cell">
-      <div class="impact-num">146K+</div>
-      <div class="impact-label">Tool Usages in 10 Months</div>
+    <div class="summary-item">
+      <div class="summary-icon">Automation Leadership</div>
+      <h3>Strategic Automation Leadership</h3>
+      <p>15+ years engineering complex automation frameworks (Ansible, Terraform, Python) delivering 35+ FTEs in cumulative operational savings across global organizations including EY, Neustar, and Accenture.</p>
     </div>
-    <div class="impact-cell">
-      <div class="impact-num">7,000+</div>
-      <div class="impact-label">Network Devices Automated (EY)</div>
+    <div class="summary-item">
+      <div class="summary-icon">Cloud-Native</div>
+      <h3>Cloud-Native &amp; Hybrid Orchestration</h3>
+      <p>Deep expertise in architecting and migrating large-scale workloads to Amazon EKS, OpenShift, and AWS, including the successful modernization of 50+ legacy monolithic workloads with zero downtime.</p>
     </div>
-    <div class="impact-cell">
-      <div class="impact-num">500+</div>
-      <div class="impact-label">Servers Migrated in 6 Months</div>
+    <div class="summary-item">
+      <div class="summary-icon">DevSecOps</div>
+      <h3>Governance &amp; DevSecOps Pioneer</h3>
+      <p>Champion of the "Security-by-Design" philosophy, implementing Just-In-Time (JIT) access, automated compliance gates, and hardened ingestion layers that eliminated 100% of standing administrative privileges.</p>
+    </div>
+    <div class="summary-item">
+      <div class="summary-icon">Global Infrastructure</div>
+      <h3>Global Infrastructure Management</h3>
+      <p>Expert in managing massive, multi-vendor fleets of 7,000+ devices, leveraging a Network-as-Code approach to eliminate configuration drift and restore 100% environment consistency.</p>
+    </div>
+    <div class="summary-item">
+      <div class="summary-icon">Observability</div>
+      <h3>Full-Stack Observability</h3>
+      <p>Architect of high-fidelity telemetry frameworks that reduced MTTI by 100%, moving organizations from reactive firefighting to proactive, data-driven operations.</p>
+    </div>
+    <div class="summary-item">
+      <div class="summary-icon">Mentorship</div>
+      <h3>Mentorship &amp; Cultural Transformation</h3>
+      <p>Experienced technical lead dedicated to bridging automation skill gaps, upskilling traditional engineering teams into code-driven units through technical playbooks and standardized developer guides.</p>
+    </div>
+    <div class="summary-item">
+      <div class="summary-icon">AI-Ready</div>
+      <h3>Future-Ready Innovations</h3>
+      <p>Actively applying Agentic AI and LLMOps frameworks to enhance high-throughput model serving and platform automation, ensuring infrastructure keeps pace with the next generation of AI-driven applications.</p>
+    </div>
+  </div>
+
+  <div class="competencies fade-up">
+    <div class="comp-header">Core Competencies</div>
+    <div class="comp-row">
+      <div class="comp-cat">Cloud &amp; Orchestration</div>
+      <div class="comp-tags"><span class="comp-tag">AWS</span><span class="comp-tag">Amazon EKS</span><span class="comp-tag">OpenShift</span><span class="comp-tag">Docker</span><span class="comp-tag">Serverless / Lambda</span></div>
+    </div>
+    <div class="comp-row">
+      <div class="comp-cat">Infrastructure as Code</div>
+      <div class="comp-tags"><span class="comp-tag">Terraform</span><span class="comp-tag">Ansible</span><span class="comp-tag">GitOps</span><span class="comp-tag">Single Source of Truth</span></div>
+    </div>
+    <div class="comp-row">
+      <div class="comp-cat">Security &amp; Compliance</div>
+      <div class="comp-tags"><span class="comp-tag">Just-In-Time (JIT) Access</span><span class="comp-tag">StrongSwan VPN</span><span class="comp-tag">RBAC</span><span class="comp-tag">chroot / Hardening</span></div>
+    </div>
+    <div class="comp-row">
+      <div class="comp-cat">Observability</div>
+      <div class="comp-tags"><span class="comp-tag">Prometheus</span><span class="comp-tag">Grafana</span><span class="comp-tag">Splunk</span><span class="comp-tag">Custom Telemetry Frameworks</span></div>
+    </div>
+    <div class="comp-row">
+      <div class="comp-cat">Automation &amp; Languages</div>
+      <div class="comp-tags"><span class="comp-tag">Python</span><span class="comp-tag">Bash</span><span class="comp-tag">Perl</span><span class="comp-tag">Jenkins</span><span class="comp-tag">REST API Integration</span></div>
+    </div>
+    <div class="comp-row">
+      <div class="comp-cat">Network Automation</div>
+      <div class="comp-tags"><span class="comp-tag">Network-as-Code</span><span class="comp-tag">BlueCat DNS</span><span class="comp-tag">Multi-vendor CLI Automation</span></div>
     </div>
   </div>
 </section>
 
+<div class="divider"></div>
+
 <!-- ASKLOUD -->
 <section id="askloud">
-  <div class="section-label" data-num="01">Open Source Project</div>
+  <div class="section-label" data-num="02">Open Source Project</div>
   <div class="askloud-layout">
     <div class="fade-up">
       <div class="askloud-badge">⬡ Askloud</div>
       <div class="section-title">Conversational<br>Multi-Cloud Search</div>
       <p class="section-sub">Ask your infrastructure in plain English. Get structured tables back. No CLI switching, no JMESPath, no data exfiltration.</p>
-
       <div class="askloud-features">
-        <div class="feature-item">
-          <div class="feature-icon">01 /NL</div>
-          <div class="feature-text">
-            <h4>Plain English → Unified Table</h4>
-            <p>LLM acts purely as a translation engine, parsing natural language into a structured JMESPath query plan executed locally by the Python engine.</p>
-          </div>
-        </div>
-        <div class="feature-item">
-          <div class="feature-icon">02 /PX</div>
-          <div class="feature-text">
-            <h4>Zero Data Exfiltration</h4>
-            <p>Your actual infrastructure inventory never leaves your machine. Only the English question and schema are sent to the Anthropic API.</p>
-          </div>
-        </div>
-        <div class="feature-item">
-          <div class="feature-icon">03 /MC</div>
-          <div class="feature-text">
-            <h4>Multi-Cloud Rosetta Stone</h4>
-            <p>Normalizes disparate data models across AWS, GCP, and Azure. Ask about a resource without knowing which cloud it lives in.</p>
-          </div>
-        </div>
-        <div class="feature-item">
-          <div class="feature-icon">04 /SH</div>
-          <div class="feature-text">
-            <h4>Native Shell Integration</h4>
-            <p>Pipe query output through grep, awk, wc. Prefix <code style="color:var(--gold)">!</code> to run raw shell commands. Fits seamlessly into developer workflows.</p>
-          </div>
-        </div>
+        <div class="feature-item"><div class="feature-icon">01 /NL</div><div class="feature-text"><h4>Plain English → Unified Table</h4><p>LLM acts purely as a translation engine, parsing natural language into a JMESPath query plan executed locally.</p></div></div>
+        <div class="feature-item"><div class="feature-icon">02 /PX</div><div class="feature-text"><h4>Zero Data Exfiltration</h4><p>Your infrastructure inventory never leaves your machine. Only the question and schema are sent to the API.</p></div></div>
+        <div class="feature-item"><div class="feature-icon">03 /MC</div><div class="feature-text"><h4>Multi-Cloud Rosetta Stone</h4><p>Normalizes disparate data models across AWS, GCP, and Azure automatically.</p></div></div>
+        <div class="feature-item"><div class="feature-icon">04 /SH</div><div class="feature-text"><h4>Native Shell Integration</h4><p>Pipe output through grep, awk, wc. Prefix <code style="color:var(--gold)">!</code> to run raw shell commands inline.</p></div></div>
       </div>
-
-      <a href="https://github.com/muralisp/askloud/" class="github-link" target="_blank" rel="noopener">
-        ↗ github.com/muralisp/askloud
-      </a>
+      <a href="https://github.com/muralisp/askloud/" class="github-link" target="_blank" rel="noopener">↗ github.com/muralisp/askloud</a>
     </div>
-
-    <div class="askloud-demo fade-up" style="transition-delay:0.15s">
+    <div class="fade-up" style="transition-delay:.15s">
       <div class="demo-terminal">
         <div class="demo-header">
-          <div class="dot dot-red"></div>
-          <div class="dot dot-yellow"></div>
-          <div class="dot dot-green"></div>
-          <span style="font-size:0.65rem;color:var(--text-dim);margin-left:auto">askloud — live mode</span>
+          <div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div>
+          <span style="font-size:.65rem;color:var(--text-mid);margin-left:auto">askloud — live mode</span>
         </div>
         <div class="demo-body">
-          <span style="color:var(--text-dim)">[live] </span><span style="color:var(--gold)">Ask > </span><span style="color:var(--text)">list running ec2 in prod</span><br>
-          <span style="color:var(--text-dim);font-size:0.7rem">[tokens: in=881 out=54 | call=$0.002 | total=$0.002]</span><br>
+          <span style="color:var(--text-mid)">[live] </span><span style="color:var(--gold)">Ask > </span><span>list running ec2 in prod</span><br>
+          <span style="color:var(--text-mid);font-size:.7rem">[tokens: in=881 out=54 | call=$0.002]</span><br>
           <span class="t-blank"></span>
           <span style="color:var(--amber)">Running EC2 Instances in Production</span><br>
-          <span style="color:var(--gold)">Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:var(--gold)">InstanceId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Region&nbsp;&nbsp;&nbsp;&nbsp;State</span><br>
-          <span style="color:var(--green)">web-server-01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:var(--text-mid)">i-0a1b2c3d4e&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t3.medium&nbsp;&nbsp;us-east-1&nbsp;&nbsp;</span><span style="color:var(--green)">running</span><br>
-          <span style="color:var(--green)">db-primary-01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:var(--text-mid)">i-0b1c3d4e5f&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r6i.xlarge&nbsp;us-east-2&nbsp;&nbsp;</span><span style="color:var(--green)">running</span><br>
-          <span style="color:var(--green)">api-gateway-02&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:var(--text-mid)">i-0c2d4e5f6a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i3.large&nbsp;&nbsp;&nbsp;eu-west-1&nbsp;&nbsp;</span><span style="color:var(--green)">running</span><br>
-          <span style="color:var(--green)">cache-node-01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:var(--text-mid)">i-0d3e5f6a7b&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r6g.large&nbsp;&nbsp;ap-east-1&nbsp;&nbsp;</span><span style="color:var(--green)">running</span><br>
-          <span class="t-blank"></span>
-          <span style="color:var(--gold)">Ask > </span><span style="color:var(--text)">web-server-01</span>&nbsp;&nbsp;<span style="color:var(--text-dim);font-size:0.7rem">← direct search, $0 cost</span><br>
-          <span class="t-blank"></span>
-          <span style="color:var(--amber)">[ebs] web-server-01</span><br>
-          <span style="color:var(--gold)">Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:var(--gold)">VolumeId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type&nbsp;&nbsp;IOPS&nbsp;&nbsp;State</span><br>
-          <span style="color:var(--green)">web-server-01-root</span><span style="color:var(--text-mid)">&nbsp;vol-0abc001&nbsp;&nbsp;&nbsp;gp3&nbsp;&nbsp;&nbsp;3000&nbsp;&nbsp;in-use</span><br>
+          <span style="color:var(--gold)">Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:var(--gold)">InstanceId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Region&nbsp;&nbsp;&nbsp;&nbsp;State</span><br>
+          <span style="color:var(--green)">web-server-01&nbsp;</span><span style="color:var(--text-mid)">i-0a1b2c3d4e&nbsp;&nbsp;&nbsp;&nbsp;t3.medium&nbsp;us-east-1&nbsp;&nbsp;</span><span style="color:var(--green)">running</span><br>
+          <span style="color:var(--green)">db-primary-01&nbsp;</span><span style="color:var(--text-mid)">i-0b1c3d4e5f&nbsp;&nbsp;&nbsp;&nbsp;r6i.xlarge us-east-2&nbsp;&nbsp;</span><span style="color:var(--green)">running</span><br>
+          <span style="color:var(--green)">api-gateway-02 </span><span style="color:var(--text-mid)">i-0c2d4e5f6a&nbsp;&nbsp;&nbsp;&nbsp;i3.large&nbsp;&nbsp;eu-west-1&nbsp;&nbsp;</span><span style="color:var(--green)">running</span><br>
           <span class="t-blank"></span>
           <span style="color:var(--gold)">Ask > </span><span class="cursor"></span>
         </div>
       </div>
-
       <div class="demo-modes">
-        <div class="mode-cell">
-          <div class="mode-name">Direct Search</div>
-          <div class="mode-desc">Single-token, zero LLM cost, instant</div>
-        </div>
-        <div class="mode-cell">
-          <div class="mode-name">Snapshot NL</div>
-          <div class="mode-desc">English queries, local JSON, offline</div>
-        </div>
-        <div class="mode-cell">
-          <div class="mode-name">Live Mode</div>
-          <div class="mode-desc">Real-time CLI execution, minimal cost</div>
-        </div>
+        <div class="mode-cell"><div class="mode-name">Direct Search</div><div class="mode-desc">Zero LLM cost, instant</div></div>
+        <div class="mode-cell"><div class="mode-name">Snapshot NL</div><div class="mode-desc">English queries, offline</div></div>
+        <div class="mode-cell"><div class="mode-name">Live Mode</div><div class="mode-desc">Real-time CLI execution</div></div>
       </div>
     </div>
   </div>
@@ -1023,18 +329,18 @@
 
 <!-- EXPERIENCE -->
 <section id="experience">
-  <div class="section-label" data-num="02">Challenge — Action — Result</div>
+  <div class="section-label" data-num="03">Challenge — Action — Result</div>
   <div class="section-title">Work Experience</div>
-  <p class="section-sub">29 CAR stories across 7 organisations, each with quantified outcomes.</p>
+  <p class="section-sub">29 CAR stories across 7 organisations. Each card pairs the infographic visual with the resume-ready impact statement.</p>
 
   <div class="exp-tabs">
-    <button class="exp-tab active" onclick="showTab('acoustic')">Acoustic</button>
-    <button class="exp-tab" onclick="showTab('wissen')">Wissen / Quilo</button>
-    <button class="exp-tab" onclick="showTab('ey')">Ernst & Young</button>
-    <button class="exp-tab" onclick="showTab('neustar')">Neustar</button>
-    <button class="exp-tab" onclick="showTab('accenture')">Accenture</button>
-    <button class="exp-tab" onclick="showTab('tavant')">Tavant / Yahoo</button>
-    <button class="exp-tab" onclick="showTab('rooman')">Rooman</button>
+    <button class="exp-tab active" onclick="showTab('acoustic',this)">Acoustic</button>
+    <button class="exp-tab" onclick="showTab('wissen',this)">Wissen / Quilo</button>
+    <button class="exp-tab" onclick="showTab('ey',this)">Ernst &amp; Young</button>
+    <button class="exp-tab" onclick="showTab('neustar',this)">Neustar</button>
+    <button class="exp-tab" onclick="showTab('accenture',this)">Accenture</button>
+    <button class="exp-tab" onclick="showTab('tavant',this)">Tavant / Yahoo</button>
+    <button class="exp-tab" onclick="showTab('rooman',this)">Rooman</button>
   </div>
 
   <!-- ACOUSTIC -->
@@ -1045,121 +351,66 @@
     </div>
     <div class="car-grid">
       <div class="car-card">
-        <div class="car-num">CAR 01</div>
-        <div class="car-title">FinOps Reporting Framework — AWS Cost Governance</div>
-        <div class="car-section">
-          <div class="car-section-label c">Challenge</div>
-          <p>Spiraling cloud costs from orphaned and underutilized resources across multiple AWS accounts. Manual audits were infrequent and ineffective.</p>
-        </div>
-        <div class="car-section">
-          <div class="car-section-label a">Action</div>
-          <p>Engineered a Python & AWS SDK FinOps Reporting Framework with automated discovery of waste across EBS, EIPs, S3, CloudWatch, ELBs, and DocumentDB, plus governance workflows for decommissioning.</p>
-        </div>
-        <div class="car-section">
-          <div class="car-section-label r">Result</div>
-          <div class="car-result-badge gold">$329,816 annual recurring savings</div>
+        <img class="car-img" src="images/car-6.jpg" alt="FinOps Reporting Framework" loading="lazy">
+        <div class="car-body">
+          <div class="car-num">CAR 01 · FinOps &amp; Cost Governance</div>
+          <div class="car-title">AWS FinOps Reporting Framework</div>
+          <div class="resume-statement">Reduced cloud costs by implementing a reporting framework to track unused AWS resources (EBS, EIPs, S3, CloudWatch, ELBs, DocumentDB), achieving $329,816 in recurring annual savings.</div>
+          <span class="car-result-badge">$329,816 annual savings</span>
         </div>
       </div>
-
       <div class="car-card">
-        <div class="car-num">CAR 02</div>
-        <div class="car-title">Ansible Migration Framework — 500+ CentOS Servers</div>
-        <div class="car-section">
-          <div class="car-section-label c">Challenge</div>
-          <p>500+ CentOS EOL servers across multiple clouds. Manual upgrades impossible — projected at over 5 FTEs of labor.</p>
-        </div>
-        <div class="car-section">
-          <div class="car-section-label a">Action</div>
-          <p>Led cross-functional team to architect a modular "Migration-as-Code" Ansible pipeline with pre-flight checks, automated backups, and post-upgrade validation.</p>
-        </div>
-        <div class="car-section">
-          <div class="car-section-label r">Result</div>
-          <div class="car-result-badge">100% compliance · 6 months · 5 FTEs saved</div>
+        <img class="car-img" src="images/car-8.jpg" alt="Ansible Migration Framework" loading="lazy">
+        <div class="car-body">
+          <div class="car-num">CAR 02 · OS Migration at Scale</div>
+          <div class="car-title">Ansible Migration Framework — 500+ CentOS Servers</div>
+          <div class="resume-statement">Led team to develop an automation framework using Ansible, enabling upgrade of 500+ CentOS servers across public clouds in 6 months and saving 5 FTEs through improved efficiency and leadership.</div>
+          <span class="car-result-badge green">100% compliance · 5 FTEs saved</span>
         </div>
       </div>
-
       <div class="car-card">
-        <div class="car-num">CAR 03</div>
-        <div class="car-title">Dynamic Observability Engine — CloudWatch Dashboard Sprawl</div>
-        <div class="car-section">
-          <div class="car-section-label c">Challenge</div>
-          <p>Thousands of static, redundant CloudWatch dashboards costing $25k/year. Fragmentation increased MTTR during incidents.</p>
-        </div>
-        <div class="car-section">
-          <div class="car-section-label a">Action</div>
-          <p>Built a Python-based "Monitoring-as-a-Service" engine that programmatically generates on-demand dashboards via AWS SDK with automated lifecycle decommissioning.</p>
-        </div>
-        <div class="car-section">
-          <div class="car-section-label r">Result</div>
-          <div class="car-result-badge gold">$25k annual savings · Reduced MTTR</div>
+        <img class="car-img" src="images/car-3.jpg" alt="Dynamic Observability Engine" loading="lazy">
+        <div class="car-body">
+          <div class="car-num">CAR 03 · Observability Engineering</div>
+          <div class="car-title">Dynamic Observability Engine — Dashboard Sprawl</div>
+          <div class="resume-statement">Reduced $25k annual costs by developing a Python-based dynamic observability solution, programmatically generating CloudWatch dashboards on demand to eliminate dashboard sprawl.</div>
+          <span class="car-result-badge">$25k annual savings</span>
         </div>
       </div>
-
       <div class="car-card">
-        <div class="car-num">CAR 04</div>
-        <div class="car-title">Graph Visualization Engine — EBS Rightsizing at Scale</div>
-        <div class="car-section">
-          <div class="car-section-label c">Challenge</div>
-          <p>1,000+ EBS volumes with raw Compute Optimizer data too complex for manual review. No clear path to rightsizing without risking performance.</p>
-        </div>
-        <div class="car-section">
-          <div class="car-section-label a">Action</div>
-          <p>Engineered a Python/Matplotlib Graph Visualization Engine transforming raw telemetry into actionable visual insights for risk-mitigated migrations.</p>
-        </div>
-        <div class="car-section">
-          <div class="car-section-label r">Result</div>
-          <div class="car-result-badge gold">$1.18M annual savings (1,000 volumes)</div>
+        <img class="car-img" src="images/car-7.jpg" alt="Graph Visualization Engine" loading="lazy">
+        <div class="car-body">
+          <div class="car-num">CAR 04 · FinOps — EBS Rightsizing</div>
+          <div class="car-title">Graph Visualization Engine — EBS Rightsizing at Scale</div>
+          <div class="resume-statement">Addressed challenge of optimizing cloud resources by developing a graph visualization solution using Python's matplotlib for AWS Compute Optimizer IOPS recommendations, achieving $1M savings for 1,000 EBS volumes.</div>
+          <span class="car-result-badge">$1.18M annual savings</span>
         </div>
       </div>
-
       <div class="car-card">
-        <div class="car-num">CAR 05</div>
-        <div class="car-title">Serverless Auto-Remediation — EBS IOPS for Billions of Transactions</div>
-        <div class="car-section">
-          <div class="car-section-label c">Challenge</div>
-          <p>Billions of daily transactions causing volatile I/O. Static provisioning led to either throttling at peak or over-provisioning at rest.</p>
-        </div>
-        <div class="car-section">
-          <div class="car-section-label a">Action</div>
-          <p>Architected a serverless AWS Lambda framework with real-time CloudWatch telemetry ingestion to dynamically modify EBS IOPS/Throughput with safety guardrails.</p>
-        </div>
-        <div class="car-section">
-          <div class="car-section-label r">Result</div>
-          <div class="car-result-badge">Zero I/O latency spikes · Foundation for AIOps</div>
+        <img class="car-img" src="images/car-2.jpg" alt="Serverless Auto-Remediation" loading="lazy">
+        <div class="car-body">
+          <div class="car-num">CAR 05 · AIOps — Serverless Remediation</div>
+          <div class="car-title">Serverless Auto-Remediation — EBS IOPS at Billions of TPS</div>
+          <div class="resume-statement">Architected AWS Lambda-based automated remediation to dynamically optimize EBS IOPS/throughput for billions of daily transactions, ensuring cost-efficiency while meeting high-performance requirements. Python enabled proactive solutions.</div>
+          <span class="car-result-badge green">Zero I/O latency spikes · AIOps foundation</span>
         </div>
       </div>
-
       <div class="car-card">
-        <div class="car-num">CAR 06</div>
-        <div class="car-title">search_aws — Multi-Account AWS Inventory CLI</div>
-        <div class="car-section">
-          <div class="car-section-label c">Challenge</div>
-          <p>25+ AWS accounts created operational silos. Existing tools lacked speed and concurrency for real-time inventory feeding into automation pipelines.</p>
-        </div>
-        <div class="car-section">
-          <div class="car-section-label a">Action</div>
-          <p>Architected "search_aws" — a high-performance Python/Bash orchestration tool for instant concurrent discovery with machine-readable output for downstream pipelines.</p>
-        </div>
-        <div class="car-section">
-          <div class="car-section-label r">Result</div>
-          <div class="car-result-badge gold">146,512 usages in 10 months · $1.83M savings · 6 FTEs</div>
+        <img class="car-img" src="images/car-11.jpg" alt="search_aws CLI tool" loading="lazy">
+        <div class="car-body">
+          <div class="car-num">CAR 06 · Multi-Account Inventory</div>
+          <div class="car-title">search_aws — High-Performance AWS Inventory CLI</div>
+          <div class="resume-statement">Developed in-house command-line AWS inventory using Python and Bash to instantly search 25+ AWS accounts, performing 146,512 usages in 10 months, saving 6 FTEs and reducing operational overhead.</div>
+          <span class="car-result-badge">$1.83M savings · 146,512 usages · 6 FTEs</span>
         </div>
       </div>
-
       <div class="car-card">
-        <div class="car-num">CAR 07</div>
-        <div class="car-title">Automated Observability — 1,000+ EBS Volume Monitoring</div>
-        <div class="car-section">
-          <div class="car-section-label c">Challenge</div>
-          <p>No centralized visibility into IOPS bursting, throughput limits, or latency trends across 1,000+ EBS volumes for the DB team.</p>
-        </div>
-        <div class="car-section">
-          <div class="car-section-label a">Action</div>
-          <p>Engineered a Python/Boto3 framework to programmatically discover all volumes and generate standardized CloudWatch Alarms and Performance Dashboards with granular threshold logic.</p>
-        </div>
-        <div class="car-section">
-          <div class="car-section-label r">Result</div>
-          <div class="car-result-badge">249 hours saved · Single pane of glass for DB team</div>
+        <img class="car-img" src="images/car-4.jpg" alt="Automated Observability Framework" loading="lazy">
+        <div class="car-body">
+          <div class="car-num">CAR 07 · Automated Observability</div>
+          <div class="car-title">Automated CloudWatch Alarms — 1,000+ EBS Volumes</div>
+          <div class="resume-statement">Automated CloudWatch alarm and dashboard creation for 1,000 EBS volumes using Python, saving 249 hours and enabling the DB team to better visualize usage trends and solve performance issues.</div>
+          <span class="car-result-badge green">249 hours saved · Single pane of glass</span>
         </div>
       </div>
     </div>
@@ -1173,46 +424,58 @@
     </div>
     <div class="car-grid">
       <div class="car-card">
-        <div class="car-num">CAR 01</div>
-        <div class="car-title">Modular Provisioning Framework — 100-Step Client Onboarding</div>
-        <div class="car-section"><div class="car-section-label c">Challenge</div><p>Manual 100-step client onboarding creating operational bottlenecks before it became a formal requirement.</p></div>
-        <div class="car-section"><div class="car-section-label a">Action</div><p>Architected a modular Ansible, Bash, and Jenkins provisioning framework later integrated into a customer-facing "one-click" product feature via REST APIs.</p></div>
-        <div class="car-section"><div class="car-section-label r">Result</div><div class="car-result-badge">6 FTEs saved annually · Reduced time-to-market</div></div>
+        <img class="car-img" src="images/car-13.jpg" alt="Modular Provisioning Framework" loading="lazy">
+        <div class="car-body">
+          <div class="car-num">CAR 01 · Self-Service Automation</div>
+          <div class="car-title">Modular Provisioning Framework — 100-Step Client Onboarding</div>
+          <div class="resume-statement">Architected &amp; engineered Ansible, Bash, and Jenkins automation to streamline 100+ step client onboarding, reducing time-to-market and saving 6 FTEs annually by enabling a one-click self-service feature.</div>
+          <span class="car-result-badge green">6 FTEs saved · One-click self-service</span>
+        </div>
       </div>
       <div class="car-card">
-        <div class="car-num">CAR 02</div>
-        <div class="car-title">StrongSwan IPsec VPN — Replacing Managed Cloud VPN</div>
-        <div class="car-section"><div class="car-section-label c">Challenge</div><p>Unnecessary monthly costs for managed site-to-site VPN services connecting VDesk and cloud environments.</p></div>
-        <div class="car-section"><div class="car-section-label a">Action</div><p>Engineered a custom StrongSwan IPsec VPN solution on Linux with high availability and robust encryption, replacing the expensive managed service.</p></div>
-        <div class="car-section"><div class="car-section-label r">Result</div><div class="car-result-badge gold">~$4.8k/year savings · 100% tunnel stability</div></div>
+        <img class="car-img" src="images/car-16.jpg" alt="StrongSwan VPN" loading="lazy">
+        <div class="car-body">
+          <div class="car-num">CAR 02 · Security &amp; Networking</div>
+          <div class="car-title">StrongSwan IPsec VPN — Replacing Managed Cloud VPN</div>
+          <div class="resume-statement">Engineered a custom StrongSwan IPsec VPN using Linux as gateway, reducing costs by ~$4.8k annually and achieving 100% tunnel stability by replacing expensive managed services with a secure, open-source solution.</div>
+          <span class="car-result-badge">~$4.8k/year savings · 100% tunnel stability</span>
+        </div>
       </div>
       <div class="car-card">
-        <div class="car-num">CAR 03</div>
-        <div class="car-title">GitOps Configuration Management Roadmap</div>
-        <div class="car-section"><div class="car-section-label c">Challenge</div><p>Fragmented deployment processes across Dev/QA/Ops teams leading to frequent outages and environment drift.</p></div>
-        <div class="car-section"><div class="car-section-label a">Action</div><p>Authored a Git-backed Configuration Management Roadmap, establishing a single source of truth with automated linting, validation, and peer-review gates.</p></div>
-        <div class="car-section"><div class="car-section-label r">Result</div><div class="car-result-badge">Elite Change Failure Rate &lt;5% · 100% auditability</div></div>
+        <img class="car-img" src="images/car-9.jpg" alt="GitOps Configuration Management" loading="lazy">
+        <div class="car-body">
+          <div class="car-num">CAR 03 · GitOps &amp; Configuration Management</div>
+          <div class="car-title">Git-Backed Configuration Management Roadmap</div>
+          <div class="resume-statement">Streamlined production deployments by authoring a Git-backed configuration management roadmap, fostering collaboration across Dev/QA/Ops to achieve an Elite Change Failure Rate and increased velocity.</div>
+          <span class="car-result-badge green">Elite Change Failure Rate &lt;5%</span>
+        </div>
       </div>
       <div class="car-card">
-        <div class="car-num">CAR 04</div>
-        <div class="car-title">Self-Service Developer Portal — Multi-Cloud IaC</div>
-        <div class="car-section"><div class="car-section-label c">Challenge</div><p>Ticket-based provisioning taking days to weeks, creating "islands" of non-compliant infrastructure.</p></div>
-        <div class="car-section"><div class="car-section-label a">Action</div><p>Built a centralized Self-Service Developer Portal using Terraform and Python with "Golden Path" templates enforcing naming, tagging, and security at request time.</p></div>
-        <div class="car-section"><div class="car-section-label r">Result</div><div class="car-result-badge gold">90% reduction in lead time · 1,000+ environments deployed</div></div>
+        <img class="car-img" src="images/car-14.jpg" alt="Self-Service Developer Portal" loading="lazy">
+        <div class="car-body">
+          <div class="car-num">CAR 04 · Platform Engineering</div>
+          <div class="car-title">Self-Service Developer Portal — Multi-Cloud IaC</div>
+          <div class="resume-statement">Architected a Self-Service Developer Portal using Terraform and Python, abstracting multi-cloud complexity to reduce resource provisioning lead times by 90% for global engineering teams.</div>
+          <span class="car-result-badge">90% lead time reduction · 1,000+ environments</span>
+        </div>
       </div>
       <div class="car-card">
-        <div class="car-num">CAR 05</div>
-        <div class="car-title">End-to-End CI/CD Pipeline — 3-Day to Sub-24hr Lead Time</div>
-        <div class="car-section"><div class="car-section-label c">Challenge</div><p>Lead time for changes exceeding 3 days due to manual testing gates and inconsistent environment configs.</p></div>
-        <div class="car-section"><div class="car-section-label a">Action</div><p>Led strategic initiative to deploy standardized CI/CD with Blue-Green and Canary deployment patterns, automated validation, and Git-backed config.</p></div>
-        <div class="car-section"><div class="car-section-label r">Result</div><div class="car-result-badge">25x deployment frequency · &lt;5% change failure rate</div></div>
+        <img class="car-img" src="images/car-19.jpg" alt="CI/CD Pipeline" loading="lazy">
+        <div class="car-body">
+          <div class="car-num">CAR 05 · CI/CD &amp; DORA Metrics</div>
+          <div class="car-title">End-to-End CI/CD — 3-Day to Sub-24hr Lead Time</div>
+          <div class="resume-statement">Led initiative to reduce lead time from 3+ days to end-to-end CI/CD pipeline, increasing deployment frequency 25× and maintaining &lt;5% change failure rate.</div>
+          <span class="car-result-badge green">25× deployment frequency · Elite DORA metrics</span>
+        </div>
       </div>
       <div class="car-card">
-        <div class="car-num">CAR 06</div>
-        <div class="car-title">Just-In-Time Access — Eliminating Standing Admin Privileges</div>
-        <div class="car-section"><div class="car-section-label c">Challenge</div><p>Large number of developers holding permanent standing administrative privileges creating broad attack surface.</p></div>
-        <div class="car-section"><div class="car-section-label a">Action</div><p>Architected an automated JIT access workflow integrating Jira and AWS IAM, replacing static permissions with time-bound, audited access via validated ticket approval.</p></div>
-        <div class="car-section"><div class="car-section-label r">Result</div><div class="car-result-badge">100% of standing admin accounts eliminated</div></div>
+        <img class="car-img" src="images/car-15.jpg" alt="JIT Access Control" loading="lazy">
+        <div class="car-body">
+          <div class="car-num">CAR 06 · DevSecOps &amp; Zero Trust</div>
+          <div class="car-title">Just-In-Time Access — Eliminating Standing Admin Privileges</div>
+          <div class="resume-statement">Architected a Jira-integrated, automated Just-In-Time access workflow, eliminating 100% of standing admin privileges to eliminate security risks and ensure auditability.</div>
+          <span class="car-result-badge">100% standing admin accounts eliminated</span>
+        </div>
       </div>
     </div>
   </div>
@@ -1220,51 +483,63 @@
   <!-- EY -->
   <div id="tab-ey" class="exp-content">
     <div class="exp-header">
-      <div class="exp-role">Ernst & Young</div>
+      <div class="exp-role">Ernst &amp; Young</div>
       <div class="exp-meta">Supervising Associate — Network Automation Engineer · 6 CARs</div>
     </div>
     <div class="car-grid">
       <div class="car-card">
-        <div class="car-num">CAR 01</div>
-        <div class="car-title">Centralized Self-Service Portal — IP, Firewall & ServiceNow</div>
-        <div class="car-section"><div class="car-section-label c">Challenge</div><p>Manual, siloed tools (BlueCat, Splunk, ServiceNow) for IP allocation, firewall log analysis, and decommissioning creating massive toil.</p></div>
-        <div class="car-section"><div class="car-section-label a">Action</div><p>Architected a Web-Based Self-Service Portal with REST API integrations automating IP management, real-time firewall visibility, and ServiceNow lifecycle tasks.</p></div>
-        <div class="car-section"><div class="car-section-label r">Result</div><div class="car-result-badge gold">10 FTEs operational savings · Requests: days → seconds</div></div>
+        <img class="car-img" src="images/car-22.jpg" alt="Self-Service Portal EY" loading="lazy">
+        <div class="car-body">
+          <div class="car-num">CAR 01 · Self-Service Portal</div>
+          <div class="car-title">Centralized Self-Service Portal — IP, Firewall &amp; ServiceNow</div>
+          <div class="resume-statement">Architected a self-service portal using REST API integrations to automate IP management, firewall logs, and decommissioning, transforming ITSM operations; reduced 10 FTEs in operational toil and cut request lead times from days to seconds.</div>
+          <span class="car-result-badge">10 FTEs saved · Days → seconds</span>
+        </div>
       </div>
       <div class="car-card">
-        <div class="car-num">CAR 02</div>
-        <div class="car-title">Internal Network Diagnostic Platform — LibreSpeed</div>
-        <div class="car-section"><div class="car-section-label c">Challenge</div><p>Inconsistent third-party speed tests providing inaccurate latency data, delaying resolution of throughput bottlenecks across global EY hubs.</p></div>
-        <div class="car-section"><div class="car-section-label a">Action</div><p>Customized LibreSpeed deployment bypassing proxy interference, deployed across strategic internal nodes for holistic global connectivity visibility.</p></div>
-        <div class="car-section"><div class="car-section-label r">Result</div><div class="car-result-badge">Reduced MTTI · Gold standard for internal troubleshooting</div></div>
+        <img class="car-img" src="images/car-1.jpg" alt="Network Diagnostic Platform" loading="lazy">
+        <div class="car-body">
+          <div class="car-num">CAR 02 · Network Diagnostics</div>
+          <div class="car-title">Internal Network Diagnostic Platform — LibreSpeed</div>
+          <div class="resume-statement">Developed a centralized internal Network Diagnostic Platform using LibreSpeed and Web Development, resolving inconsistent latency data from third-party tests and reducing MTTI across global EY hubs.</div>
+          <span class="car-result-badge green">Reduced MTTI · Gold standard for diagnostics</span>
+        </div>
       </div>
       <div class="car-card">
-        <div class="car-num">CAR 03</div>
-        <div class="car-title">Network-as-Code Mentorship — 7,000+ Device Fleet</div>
-        <div class="car-section"><div class="car-section-label c">Challenge</div><p>Network engineering team lacked software engineering skills, relying on manual CLI overrides that kept the "source of truth" inaccurate.</p></div>
-        <div class="car-section"><div class="car-section-label a">Action</div><p>Authored comprehensive "Developer Guide" and conducted hands-on training sessions to upskill traditional network engineers on Git and Ansible workflows.</p></div>
-        <div class="car-section"><div class="car-section-label r">Result</div><div class="car-result-badge">100% workflow adoption · 6 FTEs saved · 7,000+ devices</div></div>
+        <img class="car-img" src="images/car-25.jpg" alt="Network-as-Code Mentorship" loading="lazy">
+        <div class="car-body">
+          <div class="car-num">CAR 03 · Mentorship &amp; Upskilling</div>
+          <div class="car-title">Network-as-Code Mentorship — 7,000+ Device Fleet</div>
+          <div class="resume-statement">Led the transition to Network-as-Code for 7,000+ devices, overcoming a CLI-reliance skill gap by mentoring engineers and authoring a Developer Guide, achieving 100% adoption and 6 FTE savings.</div>
+          <span class="car-result-badge">100% adoption · 6 FTEs saved</span>
+        </div>
       </div>
       <div class="car-card">
-        <div class="car-num">CAR 04</div>
-        <div class="car-title">Ansible Automation — 7,000+ Multi-Vendor Network Devices</div>
-        <div class="car-section"><div class="car-section-label c">Challenge</div><p>7,000+ multi-vendor devices (Cisco IOS, NX-OS, WLC) managed through manual, fragmented CLI leading to configuration drift.</p></div>
-        <div class="car-section"><div class="car-section-label a">Action</div><p>Engineered a centralized Ansible framework with modular roles handling diverse OS syntax, "Source of Truth" in Git, and idempotent playbook design.</p></div>
-        <div class="car-section"><div class="car-section-label r">Result</div><div class="car-result-badge">100% automated deployments · Foundation for 6 FTE savings</div></div>
+        <img class="car-img" src="images/car-24.jpg" alt="Ansible Network Automation" loading="lazy">
+        <div class="car-body">
+          <div class="car-num">CAR 04 · Network Automation</div>
+          <div class="car-title">Ansible Automation — 7,000+ Multi-Vendor Network Devices</div>
+          <div class="resume-statement">Architected and deployed a centralized Ansible automation framework (Network-as-Code), migrating 7,000+ devices from manual CLI to consistent deployments, eliminating configuration drift and yielding 6 FTE operational savings.</div>
+          <span class="car-result-badge green">7,000+ devices · Configuration drift eliminated</span>
+        </div>
       </div>
       <div class="car-card">
-        <div class="car-num">CAR 05</div>
-        <div class="car-title">Hub-Spoke Telemetry — Global Latency Visibility</div>
-        <div class="car-section"><div class="car-section-label c">Challenge</div><p>No visibility into network latency between 7,000+ devices and mission-critical application servers across APAC, Americas, and EMEIA.</p></div>
-        <div class="car-section"><div class="car-section-label a">Action</div><p>Engineered a Hub-Spoke telemetry framework using Ansible servers as synthetic monitoring proxies, aggregating distributed metrics into a Global Latency Dashboard.</p></div>
-        <div class="car-section"><div class="car-section-label r">Result</div><div class="car-result-badge">Reduced MTTD · Real-time network vs server diagnostics</div></div>
+        <img class="car-img" src="images/car-20.jpg" alt="Hub-Spoke Telemetry Framework" loading="lazy">
+        <div class="car-body">
+          <div class="car-num">CAR 05 · Global Telemetry</div>
+          <div class="car-title">Hub-Spoke Telemetry Framework — Global Latency Visibility</div>
+          <div class="resume-statement">Engineered proxy-based telemetry for 7,000+ devices, reducing MTTD for global outages by distinguishing network vs. server issues across APAC, Americas, and EMEIA regions.</div>
+          <span class="car-result-badge">Reduced MTTD · Real-time performance map</span>
+        </div>
       </div>
       <div class="car-card">
-        <div class="car-num">CAR 06</div>
-        <div class="car-title">Self-Service DNS Portal — BlueCat REST API</div>
-        <div class="car-section"><div class="car-section-label c">Challenge</div><p>Legacy DNS record management requiring manual network engineer intervention for every change, increasing configuration error risk.</p></div>
-        <div class="car-section"><div class="car-section-label a">Action</div><p>Architected a Web-Based Self-Service Portal integrating with BlueCat DNS via REST APIs with automated validation logic and RBAC.</p></div>
-        <div class="car-section"><div class="car-section-label r">Result</div><div class="car-result-badge gold">DNS changes: days → minutes · 8 FTE savings</div></div>
+        <img class="car-img" src="images/car-21.jpg" alt="DNS Self-Service Portal" loading="lazy">
+        <div class="car-body">
+          <div class="car-num">CAR 06 · DNS Automation</div>
+          <div class="car-title">Self-Service DNS Portal — BlueCat REST API</div>
+          <div class="resume-statement">Architected a self-service portal integrating with BlueCat DNS via REST API, reducing DNS change lead time from days to minutes and yielding 8 FTEs in savings.</div>
+          <span class="car-result-badge">DNS changes: days → minutes · 8 FTEs saved</span>
+        </div>
       </div>
     </div>
   </div>
@@ -1277,32 +552,40 @@
     </div>
     <div class="car-grid">
       <div class="car-card">
-        <div class="car-num">CAR 01</div>
-        <div class="car-title">JVM Heap Analysis — Resolving Production OOM in Tomcat</div>
-        <div class="car-section"><div class="car-section-label c">Challenge</div><p>Mission-critical Tomcat app suffering frequent unpredictable OOM errors. Root-cause memory leak hidden within complex application heap.</p></div>
-        <div class="car-section"><div class="car-section-label a">Action</div><p>Led deep-dive technical investigation using Eclipse MAT and jmap to capture heap dumps during peak load, identify leak origins, and refactor code.</p></div>
-        <div class="car-section"><div class="car-section-label r">Result</div><div class="car-result-badge">100% application stability · New JVM observability standard</div></div>
+        <img class="car-img" src="images/car-17.jpg" alt="JVM Heap Analysis" loading="lazy">
+        <div class="car-body">
+          <div class="car-num">CAR 01 · Application Reliability</div>
+          <div class="car-title">JVM Heap Analysis — Resolving Production OOM in Tomcat</div>
+          <div class="resume-statement">Resolved unpredictable OOM errors and performance issues in a mission-critical Tomcat app by leading deep-dive JVM heap analysis; achieved 100% application stability and established new Observability standards.</div>
+          <span class="car-result-badge green">100% application stability · New observability standard</span>
+        </div>
       </div>
       <div class="car-card">
-        <div class="car-num">CAR 02</div>
-        <div class="car-title">2-Stage Migration — 50 Monoliths to EKS in One Week</div>
-        <div class="car-section"><div class="car-section-label c">Challenge</div><p>Modernizing 50 legacy monolithic client workloads. Direct "big bang" migration to Kubernetes posed too much operational risk.</p></div>
-        <div class="car-section"><div class="car-section-label a">Action</div><p>Architected a 2-stage strategy: Dockerize first to stabilize logic, then orchestrate into EKS via modular Git-backed config framework.</p></div>
-        <div class="car-section"><div class="car-section-label r">Result</div><div class="car-result-badge">99.99% uptime · 60% reduction in deployment cycles</div></div>
+        <img class="car-img" src="images/car-18.jpg" alt="Monolith to EKS Migration" loading="lazy">
+        <div class="car-body">
+          <div class="car-num">CAR 02 · Cloud-Native Migration</div>
+          <div class="car-title">2-Stage Migration — 50 Monoliths to EKS in One Week</div>
+          <div class="resume-statement">Architected &amp; executed a 2-stage migration strategy for 50 legacy workloads, refactoring monoliths into Dockerized microservices (Stage 1) and orchestrating into EKS (Stage 2), achieving 99.99% uptime and a 60% reduction in deployment cycles.</div>
+          <span class="car-result-badge">99.99% uptime · 60% fewer deployment cycles</span>
+        </div>
       </div>
       <div class="car-card">
-        <div class="car-num">CAR 03</div>
-        <div class="car-title">Hardened vsftpd — Multi-Tenant FTP Ingestion Layer</div>
-        <div class="car-section"><div class="car-section-label c">Challenge</div><p>Multi-tenant FTP gateway for global customers suffering intermittent hangs where processes entered Uninterruptible Sleep due to I/O wait.</p></div>
-        <div class="car-section"><div class="car-section-label a">Action</div><p>Implemented chroot jails and SGID bits for strict isolation, then conducted kernel-level I/O profiling and IOPS/Throughput tuning to eliminate storage bottlenecks.</p></div>
-        <div class="car-section"><div class="car-section-label r">Result</div><div class="car-result-badge">100% tenant isolation · Service hangs eliminated</div></div>
+        <img class="car-img" src="images/car-23.jpg" alt="vsftpd Ingestion Layer" loading="lazy">
+        <div class="car-body">
+          <div class="car-num">CAR 03 · Security &amp; I/O Engineering</div>
+          <div class="car-title">Hardened vsftpd — Multi-Tenant FTP Ingestion Layer</div>
+          <div class="resume-statement">Engineered a hardened vsftpd ingestion layer using Linux administration and infrastructure hardening to ensure 100% tenant isolation; resolved I/O wait bottlenecks via kernel analysis and performance engineering, eliminating service hangs.</div>
+          <span class="car-result-badge green">100% tenant isolation · Service hangs eliminated</span>
+        </div>
       </div>
       <div class="car-card">
-        <div class="car-num">CAR 04</div>
-        <div class="car-title">Web-Based Visibility Portal — Multi-Tenant Infrastructure</div>
-        <div class="car-section"><div class="car-section-label c">Challenge</div><p>No "Single Pane of Glass" for client infrastructure health. Fragmented, inconsistent naming and tagging made incident identification impossible.</p></div>
-        <div class="car-section"><div class="car-section-label a">Action</div><p>Architected a Self-Service Visibility Portal with a global initiative to standardize naming and tagging, plus automated governance policies at resource creation.</p></div>
-        <div class="car-section"><div class="car-section-label r">Result</div><div class="car-result-badge">MTTI reduced by 100% · Eliminated manual resource audits</div></div>
+        <img class="car-img" src="images/car-10.jpg" alt="Self-Service Visibility Portal" loading="lazy">
+        <div class="car-body">
+          <div class="car-num">CAR 04 · Cloud Governance</div>
+          <div class="car-title">Self-Service Visibility Portal — Multi-Tenant Infrastructure</div>
+          <div class="resume-statement">Architected a self-service visibility portal, standardizing naming/tagging via Cloud Governance, reducing MTTI for client issues by 100% and enabling Operational Excellence.</div>
+          <span class="car-result-badge">MTTI reduced 100% · Zero manual audits</span>
+        </div>
       </div>
     </div>
   </div>
@@ -1315,18 +598,22 @@
     </div>
     <div class="car-grid">
       <div class="car-card">
-        <div class="car-num">CAR 01</div>
-        <div class="car-title">Bash Orchestration — IPTV Platform Recovery Automation</div>
-        <div class="car-section"><div class="car-section-label c">Challenge</div><p>Manual L1 runbook for resolving IPTV platform hangs consuming 30+ hours of engineering toil monthly.</p></div>
-        <div class="car-section"><div class="car-section-label a">Action</div><p>Developed Bash/AWS CLI orchestration utility automating ELB draining, graceful restarts, and health-check verification with minimum-node safety checks.</p></div>
-        <div class="car-section"><div class="car-section-label r">Result</div><div class="car-result-badge gold">30 hrs/month eliminated · 85% MTTR reduction</div></div>
+        <img class="car-img" src="images/car-26.jpg" alt="IPTV Recovery Automation" loading="lazy">
+        <div class="car-body">
+          <div class="car-num">CAR 01 · SRE &amp; Platform Reliability</div>
+          <div class="car-title">Bash Orchestration — IPTV Platform Recovery Automation</div>
+          <div class="resume-statement">Automated IPTV platform recovery, reducing 30+ hours monthly toil and 85% MTTR via Bash/AWS CLI orchestration, enhancing High Availability and enabling SRE focus.</div>
+          <span class="car-result-badge green">30 hrs/month eliminated · 85% MTTR reduction</span>
+        </div>
       </div>
       <div class="car-card">
-        <div class="car-num">CAR 02</div>
-        <div class="car-title">DR Orchestration Script — Batch Service Restart Automation</div>
-        <div class="car-section"><div class="car-section-label c">Challenge</div><p>Manual "multi-TTY" approach for DR drills highly fragmented and prone to human error as engineers correlated logs across multiple open windows.</p></div>
-        <div class="car-section"><div class="car-section-label a">Action</div><p>Engineered a Batch-based Orchestration Script with environment-aware naming, multi-factor user confirmation prompts, and automated log aggregation logic.</p></div>
-        <div class="car-section"><div class="car-section-label r">Result</div><div class="car-result-badge">Reduced DR windows · 100% auditable deployment</div></div>
+        <img class="car-img" src="images/car-5.jpg" alt="DR Orchestration" loading="lazy">
+        <div class="car-body">
+          <div class="car-num">CAR 02 · DR &amp; Operational Resilience</div>
+          <div class="car-title">DR Orchestration Script — Batch Service Restart Automation</div>
+          <div class="resume-statement">Engineered orchestration script to automate fragmented, manual service restarts and log monitoring for DR drills, reducing deployment windows and ensuring 100% auditable compliance via integrated safety guardrails and automated log aggregation.</div>
+          <span class="car-result-badge">Reduced DR windows · 100% auditable</span>
+        </div>
       </div>
     </div>
   </div>
@@ -1339,18 +626,22 @@
     </div>
     <div class="car-grid">
       <div class="car-card">
-        <div class="car-num">CAR 01</div>
-        <div class="car-title">LAMP Stack SLA Monitoring Dashboard — Hadoop Analytics</div>
-        <div class="car-section"><div class="car-section-label c">Challenge</div><p>Yahoo Web Analytics team had zero real-time SLA visibility into Hadoop job failures, making proactive management impossible.</p></div>
-        <div class="car-section"><div class="car-section-label a">Action</div><p>Proactively led development of a full-stack LAMP application ingesting Hadoop telemetry with precise SLA Miss metrics and trend analysis.</p></div>
-        <div class="car-section"><div class="car-section-label r">Result</div><div class="car-result-badge">Reactive → data-driven management · Reduced SLA breach response</div></div>
+        <img class="car-img" src="images/car-27.jpg" alt="LAMP SLA Dashboard" loading="lazy">
+        <div class="car-body">
+          <div class="car-num">CAR 01 · SLA Monitoring &amp; Observability</div>
+          <div class="car-title">LAMP Stack SLA Dashboard — Hadoop Analytics at Yahoo</div>
+          <div class="resume-statement">Engineered a LAMP Stack Orchestration dashboard to address manual Hadoop job failures, enabling proactive SLA monitoring and transitioning from reactive to data-driven management to reduce breach response times and improve global analytics platform reliability.</div>
+          <span class="car-result-badge green">Reactive → data-driven · Reduced SLA breach response</span>
+        </div>
       </div>
       <div class="car-card">
-        <div class="car-num">CAR 02</div>
-        <div class="car-title">Nagios NRPE Plugins — Automated Alert-to-Ticket Pipeline</div>
-        <div class="car-section"><div class="car-section-label c">Challenge</div><p>Manual "Alert-to-Ticket" triage for database incidents requiring engineers to manually log in, run diagnostics, collect logs, and open Bugzilla tickets.</p></div>
-        <div class="car-section"><div class="car-section-label a">Action</div><p>Engineered custom Nagios NRPE plugins in Perl that auto-connect to databases on alert trigger, execute diagnostics, and generate enriched Bugzilla tickets with auto-assignment.</p></div>
-        <div class="car-section"><div class="car-section-label r">Result</div><div class="car-result-badge">100% manual L1 triage eliminated · Reduced MTTR</div></div>
+        <img class="car-img" src="images/car-28.jpg" alt="Nagios NRPE Plugins" loading="lazy">
+        <div class="car-body">
+          <div class="car-num">CAR 02 · Automated Incident Response</div>
+          <div class="car-title">Nagios NRPE Plugins — Automated Alert-to-Ticket Pipeline</div>
+          <div class="resume-statement">Automated database incident triage via custom Perl plugins, eliminating 100% of manual effort and reducing MTTR through Event-Driven Automation and Automated Contextual Triage.</div>
+          <span class="car-result-badge">100% manual L1 triage eliminated</span>
+        </div>
       </div>
     </div>
   </div>
@@ -1363,89 +654,50 @@
     </div>
     <div class="car-grid">
       <div class="car-card">
-        <div class="car-num">CAR 01</div>
-        <div class="car-title">Self-Directed Linux Mastery — Bridging Documentation Gaps</div>
-        <div class="car-section"><div class="car-section-label c">Challenge</div><p>Sole Linux Technical Lead in a Windows-centric org with zero internal documentation. Complex topics like DHCP Relay and Sendmail were being bypassed by senior staff.</p></div>
-        <div class="car-section"><div class="car-section-label a">Action</div><p>Conducted exhaustive self-directed R&D by synthesizing Man Pages and building lab environments, then documented findings into a technical playbook shared across regional branches.</p></div>
-        <div class="car-section"><div class="car-section-label r">Result</div><div class="car-result-badge">100% syllabus delivery · Cross-branch knowledge sharing enabled</div></div>
+        <img class="car-img" src="images/car-29.jpg" alt="Linux Mastery" loading="lazy">
+        <div class="car-body">
+          <div class="car-num">CAR 01 · Technical Leadership</div>
+          <div class="car-title">Self-Directed Linux Mastery — Bridging Documentation Gaps</div>
+          <div class="resume-statement">Mastered and documented complex Linux services (DHCP, Sendmail, Squid) via self-directed R&amp;D, delivering 100% of syllabus with high satisfaction and enabling cross-functional mentorship to overcome documentation gaps.</div>
+          <span class="car-result-badge green">100% syllabus · Cross-branch knowledge sharing</span>
+        </div>
       </div>
       <div class="car-card">
-        <div class="car-num">CAR 02</div>
-        <div class="car-title">Squid Proxy — Government Training Compliance</div>
-        <div class="car-section"><div class="car-section-label c">Challenge</div><p>Students bypassing educational resources for unauthorized content during a high-stakes Police Department government training contract.</p></div>
-        <div class="car-section"><div class="car-section-label a">Action</div><p>Architected and deployed a Squid Proxy Server with custom ACLs implementing granular content filtering, blocking inappropriate domains with zero latency impact on legitimate traffic.</p></div>
-        <div class="car-section"><div class="car-section-label r">Result</div><div class="car-result-badge">100% compliance restored · Secured government contract</div></div>
+        <img class="car-img" src="images/car-30.jpg" alt="Squid Proxy Compliance" loading="lazy">
+        <div class="car-body">
+          <div class="car-num">CAR 02 · Network Security</div>
+          <div class="car-title">Squid Proxy — Government Training Compliance</div>
+          <div class="resume-statement">Architected &amp; deployed Squid Proxy Server with custom ACLs, resolving 100% compliance gap and eliminating unauthorized bandwidth, securing reputation and future tenders via Network Security.</div>
+          <span class="car-result-badge">100% compliance · Government contract secured</span>
+        </div>
       </div>
     </div>
   </div>
+
 </section>
 
 <!-- SKILLS -->
 <section id="skills">
-  <div class="section-label" data-num="03">Technical Stack</div>
-  <div class="section-title">Skills & Tools</div>
+  <div class="section-label" data-num="04">Technical Stack</div>
+  <div class="section-title">Skills &amp; Tools</div>
   <p class="section-sub">Technologies applied across 29 CAR stories and the Askloud open-source project.</p>
-
   <div class="skills-grid fade-up">
     <div class="skill-group">
-      <h3>Cloud & Infrastructure</h3>
+      <h3>Cloud &amp; Infrastructure</h3>
       <div class="skill-tags">
-        <span class="skill-tag">AWS</span>
-        <span class="skill-tag">GCP</span>
-        <span class="skill-tag">Azure</span>
-        <span class="skill-tag">EC2</span>
-        <span class="skill-tag">EBS</span>
-        <span class="skill-tag">Lambda</span>
-        <span class="skill-tag">S3</span>
-        <span class="skill-tag">CloudWatch</span>
-        <span class="skill-tag">EKS</span>
-        <span class="skill-tag">VPC</span>
-        <span class="skill-tag">IAM</span>
-        <span class="skill-tag">ELB</span>
-        <span class="skill-tag">DocumentDB</span>
-        <span class="skill-tag">RDS</span>
-        <span class="skill-tag">Boto3</span>
-        <span class="skill-tag">AWS CLI</span>
+        <span class="skill-tag">AWS</span><span class="skill-tag">GCP</span><span class="skill-tag">Azure</span><span class="skill-tag">EC2</span><span class="skill-tag">EBS</span><span class="skill-tag">Lambda</span><span class="skill-tag">S3</span><span class="skill-tag">CloudWatch</span><span class="skill-tag">EKS</span><span class="skill-tag">OpenShift</span><span class="skill-tag">VPC</span><span class="skill-tag">IAM</span><span class="skill-tag">ELB</span><span class="skill-tag">DocumentDB</span><span class="skill-tag">Boto3</span>
       </div>
     </div>
     <div class="skill-group">
-      <h3>Automation & DevOps</h3>
+      <h3>Automation &amp; DevOps</h3>
       <div class="skill-tags">
-        <span class="skill-tag">Python</span>
-        <span class="skill-tag">Ansible</span>
-        <span class="skill-tag">Terraform</span>
-        <span class="skill-tag">Jenkins</span>
-        <span class="skill-tag">Bash</span>
-        <span class="skill-tag">GitOps</span>
-        <span class="skill-tag">CI/CD</span>
-        <span class="skill-tag">Docker</span>
-        <span class="skill-tag">Kubernetes</span>
-        <span class="skill-tag">Blue-Green Deploy</span>
-        <span class="skill-tag">Canary Deploy</span>
-        <span class="skill-tag">Perl</span>
-        <span class="skill-tag">Matplotlib</span>
-        <span class="skill-tag">REST APIs</span>
+        <span class="skill-tag">Python</span><span class="skill-tag">Ansible</span><span class="skill-tag">Terraform</span><span class="skill-tag">Jenkins</span><span class="skill-tag">Bash</span><span class="skill-tag">GitOps</span><span class="skill-tag">CI/CD</span><span class="skill-tag">Docker</span><span class="skill-tag">Kubernetes</span><span class="skill-tag">Blue-Green</span><span class="skill-tag">Canary</span><span class="skill-tag">Perl</span><span class="skill-tag">Matplotlib</span><span class="skill-tag">REST APIs</span>
       </div>
     </div>
     <div class="skill-group">
-      <h3>Observability & Networking</h3>
+      <h3>Observability &amp; Networking</h3>
       <div class="skill-tags">
-        <span class="skill-tag">Nagios</span>
-        <span class="skill-tag">Splunk</span>
-        <span class="skill-tag">LibreSpeed</span>
-        <span class="skill-tag">JVM / MAT</span>
-        <span class="skill-tag">Cisco IOS</span>
-        <span class="skill-tag">NX-OS</span>
-        <span class="skill-tag">BlueCat DNS</span>
-        <span class="skill-tag">ServiceNow</span>
-        <span class="skill-tag">Jira</span>
-        <span class="skill-tag">vsftpd</span>
-        <span class="skill-tag">StrongSwan</span>
-        <span class="skill-tag">Squid Proxy</span>
-        <span class="skill-tag">LAMP Stack</span>
-        <span class="skill-tag">FinOps</span>
-        <span class="skill-tag">SRE</span>
-        <span class="skill-tag">AIOps</span>
+        <span class="skill-tag">Prometheus</span><span class="skill-tag">Grafana</span><span class="skill-tag">Nagios</span><span class="skill-tag">Splunk</span><span class="skill-tag">LibreSpeed</span><span class="skill-tag">JVM / MAT</span><span class="skill-tag">Cisco IOS</span><span class="skill-tag">NX-OS</span><span class="skill-tag">BlueCat DNS</span><span class="skill-tag">ServiceNow</span><span class="skill-tag">StrongSwan</span><span class="skill-tag">Squid Proxy</span><span class="skill-tag">FinOps</span><span class="skill-tag">SRE</span><span class="skill-tag">AIOps</span>
       </div>
     </div>
   </div>
@@ -1454,53 +706,34 @@
 <!-- CONTACT -->
 <section id="contact">
   <div class="contact-inner fade-up">
-    <div class="section-label" data-num="04" style="justify-content:center">Get In Touch</div>
+    <div class="section-label" data-num="05" style="justify-content:center">Get In Touch</div>
     <div class="section-title" style="font-size:2.5rem">Let's Build<br><span style="color:var(--gold)">Something Together</span></div>
-    <p class="section-sub" style="margin:1rem auto 0; text-align:center">Open to Senior DevOps, SRE, and Platform Engineering opportunities. Also happy to collaborate on Askloud or discuss cloud automation challenges.</p>
+    <p class="section-sub" style="margin:1rem auto 0;text-align:center">Open to Senior DevOps, SRE Lead, and Platform Engineering opportunities. Happy to collaborate on Askloud or discuss cloud automation challenges.</p>
     <div class="contact-links">
-      <a href="https://github.com/muralisp/askloud/" class="contact-link" target="_blank" rel="noopener">
-        ⬡ GitHub / Askloud
-      </a>
-      <a href="https://www.linkedin.com/in/muralisp" class="contact-link" target="_blank" rel="noopener">
-        ↗ LinkedIn
-      </a>
-      <a href="mailto:murali@example.com" class="contact-link">
-        ✉ Email
-      </a>
+      <a href="https://github.com/muralisp/askloud/" class="contact-link" target="_blank" rel="noopener">⬡ GitHub / Askloud</a>
+      <a href="https://www.linkedin.com/in/muralisp" class="contact-link" target="_blank" rel="noopener">↗ LinkedIn</a>
+      <a href="mailto:murali@example.com" class="contact-link">✉ Email</a>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <p>© 2026 <span class="gold">Murali S P</span> — Bengaluru, India</p>
-  <p>Built with <span class="gold">HTML · CSS · JS</span> · Deployable on GitHub Pages</p>
+  <p>Built with <span class="gold">HTML · CSS · JS</span> · Hosted on GitHub Pages</p>
 </footer>
 
 <script>
-  // Tab switching
-  function showTab(id) {
-    document.querySelectorAll('.exp-content').forEach(el => el.classList.remove('active'));
-    document.querySelectorAll('.exp-tab').forEach(el => el.classList.remove('active'));
+  function showTab(id, el) {
+    document.querySelectorAll('.exp-content').forEach(e => e.classList.remove('active'));
+    document.querySelectorAll('.exp-tab').forEach(e => e.classList.remove('active'));
     document.getElementById('tab-' + id).classList.add('active');
-    event.target.classList.add('active');
+    el.classList.add('active');
   }
-
-  // Intersection observer for fade-up animations
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-
-  // Trigger hero animations immediately
-  setTimeout(() => {
-    document.querySelectorAll('.hero .fade-up').forEach(el => el.classList.add('visible'));
-  }, 100);
+  setTimeout(() => { document.querySelectorAll('.hero .fade-up').forEach(el => el.classList.add('visible')); }, 100);
 </script>
 </body>
 </html>
